@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <h6>HomePage</h6>
+    </head>
+    <body>
+        <div style="border:1px solid red;"><h1>Library Form Page</h1></div><hr>
+        <!-- {% for b in books %}
+        {{b.id}}---{{b.name}}<br>
+        {% endfor %} -->
+    <form action="/save-book/", method="post">
+    <fieldset>
+        {% csrf_token %}
+        <legend><h3>Enter Book Details</h3></legend><br>
+        {% if book %}
+            Book ID: <input type= "text" value="{{book.id}}" name="id" readonly><br><br>
+        {% endif %}
+        Book Name: <input tpe= "text" value="{{book.name}}" name="name" required><br><br>
+        Book Author: <input type= "text" value="{{book.author}}" name="auth" required><br><br>
+        Book Quantity: <input type="number" name="qty" value="{{book.qty}}" required><br><br>
+        Book Price: <input type= "number" name="price" value="{{book.price}}" required><br><br>
+        {% if book.is_published %}
+            Is_Published: <input type="radio" name="pub" checked>Published
+            <input type="radio" name="pub">Not Published<br><br>
+        {% else %}
+            Is_Published: <input type="radio" name="pub">Published
+            <input type="radio" name="pub" checked>Not Published<br><br>
+        {% endif %}
+
+        {% if book %}
+            <input type="submit" value="Update Book">
+        {% else %}
+            <input type="submit" value="Add Book">
+        {% endif %}
+    </fieldset>
+    </form>
+    <fieldset>
+        <legend><h3>All Books</h3></legend>
+        <a href="/show-deleted/">Show Deleted data</a> <br><br>
+        <a href="/delete-all/">Delete ALL</a> <br><br>
+        <a href="/restore-all/">Restore ALL</a> <br><br>
+        <a href="/">Home Page</a> <br><br>
+
+        
+
+        
+    <table border="1">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Is_Published</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {% for b in books %}
+            <tr>
+            <td>{{b.id}}</td>
+            <td>{{b.name}}</td>
+            <td>{{b.author}}</td>
+            <td>{{b.qty}}</td>
+            <td>{{b.price}}</td>
+            <td>{{b.is_published}}</td>               
+            <td>
+               
+
+                {% ifequal b.is_deleted "Y" %}
+
+                <a href="/hard-deleted/{{b.id}}/">Hard Delete</a> ||
+                <a href="/restore/{{b.id}}/">Restore</a>
+
+                {% endifequal %}
+
+                {% ifequal b.is_deleted "N" %}
+                <a href="/edit-book/{{b.id}}/">Edit</a> ||
+                <a href="/delete-book/{{b.id}}/">Soft Delete</a>
+                {% endifequal %}
+
+                
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </fieldset>
+    </body>>
+</html>
